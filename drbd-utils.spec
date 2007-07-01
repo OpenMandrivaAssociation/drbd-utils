@@ -1,26 +1,35 @@
 %define major	8
 %define minor	0
-%define drbd_api_ver	83
-%define pre	pre4
+%define sub	3
+%define pre	0
+%define drbd_api_ver	86
 
-Name:          drbd-utils
-Version:       %{major}.%{minor}
-Release:       %mkrel 0.%{pre}.2
-Summary:       Utilities to manage DRBD devices
-Summary(pt_BR):Utilitários para gerenciar dispositivos DRBD
-Summary(es):   Utilities to manage DRBD devices
-License:       GPL
-Group:         System/Kernel and hardware
-URL:           http://www.drbd.org/
-Source:        http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
-Patch:         drbd-8.0pre4-usrsbin.patch
-BuildRequires: bison
-BuildRequires: flex
-Requires(post):  rpm-helper
-Requires(preun): rpm-helper
-Requires(post):initscripts
-Requires:      drbd-api = %{drbd_api_ver}
-BuildRoot:     %{_tmppath}/%{name}-%{version}-root
+Name:		drbd-utils
+Version:	%{major}.%{minor}.%{sub}
+%if %pre
+Release:	%mkrel 0.%{pre}.1
+%else
+Release:	%mkrel 1
+%endif
+Summary:	Utilities to manage DRBD devices
+Summary(pt_BR):	Utilitários para gerenciar dispositivos DRBD
+Summary(es):	Utilities to manage DRBD devices
+License:	GPL
+Group:		System/Kernel and hardware
+URL:		http://www.drbd.org/
+%if %pre
+Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
+%else
+Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
+%endif
+Patch:		drbd-8.0pre4-usrsbin.patch
+BuildRequires:	bison
+BuildRequires:	flex
+Requires(post):	rpm-helper
+Requires(preun):	rpm-helper
+Requires(post):	initscripts
+Requires:	drbd-api = %{drbd_api_ver}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %package heartbeat
 Summary:       Script to help integration with heartbeat
@@ -33,7 +42,7 @@ Requires:      %{name} = %{version}
 %description
 DRBD is a block device which is designed to build High Availability clusters.
 This is done by mirroring a whole block device via (maybe dedicated) network.
-You could see it as a network RAID 1. This package contains the utils to
+You could see it as a network RAID 1. This package contains the tools to
 manage DRBD devices.
 
 %description -l pt_BR
@@ -50,7 +59,11 @@ Instala o script datadisk, criado para facilitar a integração do drbd com o
 heartbeat.
 
 %prep
+%if %pre
 %setup -q -n drbd-%{version}%{pre}
+%else
+%setup -q -n drbd-%{version}
+%endif
 %patch -p1 -b .sbin
 
 # non-arch executable in datadir, fix conf file
