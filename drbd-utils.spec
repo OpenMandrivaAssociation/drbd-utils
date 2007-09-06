@@ -1,6 +1,6 @@
 %define major	8
 %define minor	0
-%define sub	3
+%define sub	6
 %define pre	0
 %define drbd_api_ver	86
 
@@ -14,7 +14,7 @@ Release:	%mkrel 1
 Summary:	Utilities to manage DRBD devices
 Summary(pt_BR):	Utilitários para gerenciar dispositivos DRBD
 Summary(es):	Utilities to manage DRBD devices
-License:	GPL
+License:	GPLv2+
 Group:		System/Kernel and hardware
 URL:		http://www.drbd.org/
 %if %pre
@@ -22,7 +22,7 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.0pre4-usrsbin.patch
+Patch:		drbd-8.0.6-usrsbin.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -102,6 +102,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/drbd.conf
 %dir %{_var}/lib/drbd
 %{_sysconfdir}/rc.d/init.d/drbd
+%{_sysconfdir}/xen/scripts/block-drbd
 %{_sbindir}/drbdadm
 %{_sbindir}/drbdmeta
 %{_sbindir}/drbdsetup
@@ -120,6 +121,4 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_sysconfdir}/ha.d/resource.d/drbddisk
 %defattr(0644,root,root,0755)
-
-
 
