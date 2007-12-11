@@ -1,6 +1,6 @@
 %define major	8
 %define minor	0
-%define sub	6
+%define sub	8
 %define pre	0
 %define drbd_api_ver	86
 
