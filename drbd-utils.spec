@@ -29,7 +29,6 @@ Requires(post):	rpm-helper
 Requires(preun):	rpm-helper
 Requires(post):	initscripts
 Requires:	drbd-api = %{drbd_api_ver}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %package heartbeat
 Summary:       Script to help integration with heartbeat
