@@ -9,7 +9,7 @@ Version:	%{major}.%{minor}.%{sub}
 %if %pre
 Release:	%mkrel 0.%{pre}.1
 %else
-Release:	%mkrel 1
+Release:	%mkrel 2
 %endif
 Summary:	Utilities to manage DRBD devices
 Summary(pt_BR):	Utilitários para gerenciar dispositivos DRBD
