@@ -1,6 +1,6 @@
 %define major	8
 %define minor	0
-%define sub	8
+%define sub	11
 %define pre	0
 %define drbd_api_ver	86
 
@@ -12,8 +12,6 @@ Release:	%mkrel 0.%{pre}.1
 Release:	%mkrel 2
 %endif
 Summary:	Utilities to manage DRBD devices
-Summary(pt_BR):	Utilitários para gerenciar dispositivos DRBD
-Summary(es):	Utilities to manage DRBD devices
 License:	GPLv2+
 Group:		System/Kernel and hardware
 URL:		http://www.drbd.org/
@@ -33,8 +31,6 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %package heartbeat
 Summary:       Script to help integration with heartbeat
-Summary(pt_BR):Script para facilitar a integraçao com o heartbeaScript para facilitar a integraçao com o heartbeat
-Summary(es):   Script to help integration with heartbeat
 Group:         System/Kernel and hardware
 Requires:      heartbeat
 Requires:      %{name} = %{version}
@@ -45,18 +41,8 @@ This is done by mirroring a whole block device via (maybe dedicated) network.
 You could see it as a network RAID 1. This package contains the tools to
 manage DRBD devices.
 
-%description -l pt_BR
-O DRBD é um dispositivo de bloco que é projetado para construir clusters de
-Alta Disponibilidade. Isto é feito espelhando um dispositivo de bloco inteiro
-via rede (dedicada ou não). Pode ser visto como um RAID 1 via rede. Este pacote
-contém utilitários para gerenciar dispositivos DRBD.
-
 %description heartbeat
 Installs the datadisk script, designed to ease integration with heartbeat.
-
-%description -l pt_BR heartbeat
-Instala o script datadisk, criado para facilitar a integração do drbd com o
-heartbeat.
 
 %prep
 %if %pre
@@ -79,7 +65,6 @@ make PREFIX=%{buildroot} install-tools
 
 install -d %{buildroot}%{_var}/lib/drbd
 install -d %{buildroot}{%{_bindir},%{_sbindir}}
-install -m 755 testing/compare.pl %{buildroot}%{_bindir}/compare.pl
 
 mkdir -p %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/outdate-peer.sh %{buildroot}%{_datadir}/drbd
@@ -106,7 +91,6 @@ rm -rf %{buildroot}
 %{_sbindir}/drbdadm
 %{_sbindir}/drbdmeta
 %{_sbindir}/drbdsetup
-%{_bindir}/compare.pl
 %dir %{_datadir}/drbd
 %{_datadir}/drbd/outdate-peer.sh
 %defattr(0644,root,root,0755)
