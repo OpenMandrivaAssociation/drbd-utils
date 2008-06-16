@@ -9,7 +9,7 @@ Version:	%{major}.%{minor}.%{sub}
 %if %pre
 Release:	%mkrel 0.%{pre}.1
 %else
-Release:	%mkrel 2
+Release:	%mkrel 3
 %endif
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
