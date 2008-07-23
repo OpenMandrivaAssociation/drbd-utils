@@ -1,6 +1,6 @@
 %define major	8
-%define minor	0
-%define sub	11
+%define minor	2
+%define sub	6
 %define pre	0
 %define drbd_api_ver	86
 
@@ -9,7 +9,7 @@ Version:	%{major}.%{minor}.%{sub}
 %if %pre
 Release:	%mkrel 0.%{pre}.1
 %else
-Release:	%mkrel 3
+Release:	%mkrel 1
 %endif
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
@@ -20,7 +20,7 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.0.6-usrsbin.patch
+Patch:		drbd-8.2.6-usrsbin.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -68,6 +68,8 @@ install -d %{buildroot}{%{_bindir},%{_sbindir}}
 
 mkdir -p %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/outdate-peer.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/snapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/unsnapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
 # don't use rm -rf because we want to know if some new version
 # installed something here we didn't know about
 rmdir %{buildroot}%{_prefix}/lib/drbd/
@@ -93,6 +95,8 @@ rm -rf %{buildroot}
 %{_sbindir}/drbdsetup
 %dir %{_datadir}/drbd
 %{_datadir}/drbd/outdate-peer.sh
+%{_datadir}/drbd/snapshot-resync-target-lvm.sh
+%{_datadir}/drbd/unsnapshot-resync-target-lvm.sh
 %defattr(0644,root,root,0755)
 %doc %{_mandir}/man5/drbd.conf.5*
 %doc %{_mandir}/man8/drbd.8*
