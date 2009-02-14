@@ -1,8 +1,8 @@
 %define major	8
-%define minor	2
-%define sub	6
+%define minor	3
+%define sub	0
 %define pre	0
-%define drbd_api_ver	86
+%define drbd_api_ver	88
 
 Name:		drbd-utils
 Version:	%{major}.%{minor}.%{sub}
@@ -20,7 +20,7 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.2.6-usrsbin.patch
+Patch:		drbd-8.3.0-usrsbin.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -67,6 +67,9 @@ install -d %{buildroot}%{_var}/lib/drbd
 install -d %{buildroot}{%{_bindir},%{_sbindir}}
 
 mkdir -p %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-out-of-sync.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-split-brain.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/outdate-peer.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/snapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/unsnapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
@@ -90,13 +93,21 @@ rm -rf %{buildroot}
 %dir %{_var}/lib/drbd
 %{_sysconfdir}/rc.d/init.d/drbd
 %{_sysconfdir}/xen/scripts/block-drbd
+%{_sbindir}/drbd-overview.pl
 %{_sbindir}/drbdadm
 %{_sbindir}/drbdmeta
 %{_sbindir}/drbdsetup
+%dir %{_datadir}/cluster
+%{_datadir}/cluster/drbd.metadata
+%{_datadir}/cluster/drbd.sh
 %dir %{_datadir}/drbd
+%{_datadir}/drbd/notify.sh
+%{_datadir}/drbd/notify-out-of-sync.sh
+%{_datadir}/drbd/notify-split-brain.sh
 %{_datadir}/drbd/outdate-peer.sh
 %{_datadir}/drbd/snapshot-resync-target-lvm.sh
 %{_datadir}/drbd/unsnapshot-resync-target-lvm.sh
+
 %defattr(0644,root,root,0755)
 %doc %{_mandir}/man5/drbd.conf.5*
 %doc %{_mandir}/man8/drbd.8*
@@ -108,5 +119,6 @@ rm -rf %{buildroot}
 %files heartbeat
 %defattr(-,root,root)
 %{_sysconfdir}/ha.d/resource.d/drbddisk
+%{_sysconfdir}/ha.d/resource.d/drbdupper
 %defattr(0644,root,root,0755)
 
