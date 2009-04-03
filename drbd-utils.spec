@@ -1,6 +1,6 @@
 %define major	8
 %define minor	3
-%define sub	0
+%define sub	1
 %define pre	0
 %define drbd_api_ver	88
 
@@ -20,7 +20,7 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.3.0-usrsbin.patch
+Patch:		drbd-8.3.1-usrsbin.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -68,7 +68,13 @@ install -d %{buildroot}{%{_bindir},%{_sbindir}}
 
 mkdir -p %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-emergency-reboot.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-emergency-shutdown.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-io-error.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify-out-of-sync.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-pri-lost-after-sb.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-pri-lost.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/notify-pri-on-incon-degr.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify-split-brain.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/outdate-peer.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/snapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
@@ -92,8 +98,9 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/drbd.conf
 %dir %{_var}/lib/drbd
 %{_sysconfdir}/rc.d/init.d/drbd
+%{_sysconfdir}/udev/rules.d/65-drbd.rules
 %{_sysconfdir}/xen/scripts/block-drbd
-%{_sbindir}/drbd-overview.pl
+%{_sbindir}/drbd-overview
 %{_sbindir}/drbdadm
 %{_sbindir}/drbdmeta
 %{_sbindir}/drbdsetup
@@ -102,7 +109,13 @@ rm -rf %{buildroot}
 %{_datadir}/cluster/drbd.sh
 %dir %{_datadir}/drbd
 %{_datadir}/drbd/notify.sh
+%{_datadir}/drbd/notify-emergency-reboot.sh
+%{_datadir}/drbd/notify-emergency-shutdown.sh
+%{_datadir}/drbd/notify-io-error.sh
 %{_datadir}/drbd/notify-out-of-sync.sh
+%{_datadir}/drbd/notify-pri-lost-after-sb.sh
+%{_datadir}/drbd/notify-pri-lost.sh
+%{_datadir}/drbd/notify-pri-on-incon-degr.sh
 %{_datadir}/drbd/notify-split-brain.sh
 %{_datadir}/drbd/outdate-peer.sh
 %{_datadir}/drbd/snapshot-resync-target-lvm.sh
