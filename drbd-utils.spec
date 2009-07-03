@@ -1,6 +1,6 @@
 %define major	8
 %define minor	3
-%define sub	1
+%define sub	2
 %define pre	0
 %define drbd_api_ver	88
 
@@ -20,7 +20,7 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.3.1-usrsbin.patch
+Patch:		drbd-8.3.2-usrsbin.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -67,6 +67,8 @@ install -d %{buildroot}%{_var}/lib/drbd
 install -d %{buildroot}{%{_bindir},%{_sbindir}}
 
 mkdir -p %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/crm-fence-peer.sh %{buildroot}%{_datadir}/drbd
+mv -f %{buildroot}%{_prefix}/lib/drbd/crm-unfence-peer.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify-emergency-reboot.sh %{buildroot}%{_datadir}/drbd
 mv -f %{buildroot}%{_prefix}/lib/drbd/notify-emergency-shutdown.sh %{buildroot}%{_datadir}/drbd
@@ -81,8 +83,10 @@ mv -f %{buildroot}%{_prefix}/lib/drbd/snapshot-resync-target-lvm.sh %{buildroot}
 mv -f %{buildroot}%{_prefix}/lib/drbd/unsnapshot-resync-target-lvm.sh %{buildroot}%{_datadir}/drbd
 # don't use rm -rf because we want to know if some new version
 # installed something here we didn't know about
-rmdir %{buildroot}%{_prefix}/lib/drbd/
-rmdir %{buildroot}%{_prefix}/lib
+
+# This trick does not work anymore as there now are files that need to stay in /usr/lib
+#rmdir %{buildroot}%{_prefix}/lib/drbd/
+#rmdir %{buildroot}%{_prefix}/lib
 
 %clean
 rm -rf %{buildroot}
@@ -97,6 +101,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/drbd.conf
 %dir %{_var}/lib/drbd
+%{_sysconfdir}/bash_completion.d/drbdadm
 %{_sysconfdir}/rc.d/init.d/drbd
 %{_sysconfdir}/udev/rules.d/65-drbd.rules
 %{_sysconfdir}/xen/scripts/block-drbd
@@ -108,6 +113,8 @@ rm -rf %{buildroot}
 %{_datadir}/cluster/drbd.metadata
 %{_datadir}/cluster/drbd.sh
 %dir %{_datadir}/drbd
+%{_datadir}/drbd/crm-fence-peer.sh
+%{_datadir}/drbd/crm-unfence-peer.sh
 %{_datadir}/drbd/notify.sh
 %{_datadir}/drbd/notify-emergency-reboot.sh
 %{_datadir}/drbd/notify-emergency-shutdown.sh
@@ -133,5 +140,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_sysconfdir}/ha.d/resource.d/drbddisk
 %{_sysconfdir}/ha.d/resource.d/drbdupper
+%dir /usr/lib/ocf/resource.d/linbit
+/usr/lib/ocf/resource.d/linbit/drbd
 %defattr(0644,root,root,0755)
 
