@@ -1,6 +1,6 @@
 %define major	8
 %define minor	3
-%define sub	2
+%define sub	5
 %define pre	0
 %define drbd_api_ver	88
 
@@ -20,7 +20,9 @@ Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}%{pre}.tar.gz
 %else
 Source:		http://oss.linbit.com/drbd/%{major}/drbd-%{version}.tar.gz
 %endif
-Patch:		drbd-8.3.2-usrsbin.patch
+Patch:		drbd-8.3.5-usrsbin.patch
+# Install bash completion file on Mandriva
+Patch1:		drbd-8.3.5-bash-completion.patch
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
@@ -51,6 +53,7 @@ Installs the datadisk script, designed to ease integration with heartbeat.
 %setup -q -n drbd-%{version}
 %endif
 %patch -p1 -b .sbin
+%patch1 -p1 -b .bashcompletion
 
 # non-arch executable in datadir, fix conf file
 sed -i 's,/usr/lib/drbd/outdate-peer\.sh,%{_datadir}/drbd/outdate-peer.sh,g' scripts/drbd.conf
