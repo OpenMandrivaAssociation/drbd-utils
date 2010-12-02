@@ -7,9 +7,9 @@
 Name:		drbd-utils
 Version:	%{major}.%{minor}.%{sub}
 %if %pre
-Release:	%mkrel 0.%{pre}.1
+Release:	%mkrel 0.%{pre}.2
 %else
-Release:	%mkrel 1
+Release:	%mkrel 2
 %endif
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
