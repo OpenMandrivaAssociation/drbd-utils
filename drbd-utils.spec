@@ -42,7 +42,7 @@ Installs the datadisk script, designed to ease integration with heartbeat.
 %patch -p1 -b .sbin
 
 # non-arch executable in datadir, fix conf file
-sed -i 's,/usr/lib/drbd/outdate-peer\.sh,%{_datadir}/drbd/outdate-peer.sh,g' scripts/drbd.conf
+sed -i 's,%{_libdir}/drbd/outdate-peer\.sh,%{_datadir}/drbd/outdate-peer.sh,g' scripts/drbd.conf
 
 %build
 ./configure \
@@ -88,20 +88,20 @@ rm -rf %{buildroot}
 %{_sbindir}/drbdmeta
 %{_sbindir}/drbdsetup
 %dir %{_datadir}/drbd
-%{_libdir}/drbd/crm-fence-peer.sh
-%{_libdir}/drbd/crm-unfence-peer.sh
-%{_libdir}/drbd/notify.sh
-%{_libdir}/drbd/notify-emergency-reboot.sh
-%{_libdir}/drbd/notify-emergency-shutdown.sh
-%{_libdir}/drbd/notify-io-error.sh
-%{_libdir}/drbd/notify-out-of-sync.sh
-%{_libdir}/drbd/notify-pri-lost-after-sb.sh
-%{_libdir}/drbd/notify-pri-lost.sh
-%{_libdir}/drbd/notify-pri-on-incon-degr.sh
-%{_libdir}/drbd/notify-split-brain.sh
-%{_libdir}/drbd/outdate-peer.sh
-%{_libdir}/drbd/snapshot-resync-target-lvm.sh
-%{_libdir}/drbd/unsnapshot-resync-target-lvm.sh
+/usr/lib/drbd/crm-fence-peer.sh
+/usr/lib/drbd/crm-unfence-peer.sh
+/usr/lib/drbd/notify.sh
+/usr/lib/drbd/notify-emergency-reboot.sh
+/usr/lib/drbd/notify-emergency-shutdown.sh
+/usr/lib/drbd/notify-io-error.sh
+/usr/lib/drbd/notify-out-of-sync.sh
+/usr/lib/drbd/notify-pri-lost-after-sb.sh
+/usr/lib/drbd/notify-pri-lost.sh
+/usr/lib/drbd/notify-pri-on-incon-degr.sh
+/usr/lib/drbd/notify-split-brain.sh
+/usr/lib/drbd/outdate-peer.sh
+/usr/lib/drbd/snapshot-resync-target-lvm.sh
+/usr/lib/drbd/unsnapshot-resync-target-lvm.sh
 
 %defattr(0644,root,root,0755)
 %doc %{_mandir}/man5/drbd.conf.5*
