@@ -1,12 +1,12 @@
 %define major	8
 %define minor	3
-%define sub	7
+%define sub	10
 %define pre	0
 %define drbd_api_ver	88
 
 Name:		drbd-utils
 Version:	%{major}.%{minor}.%{sub}
-Release:	%mkrel 4
+Release:	%mkrel 1
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
 Group:		System/Kernel and hardware
