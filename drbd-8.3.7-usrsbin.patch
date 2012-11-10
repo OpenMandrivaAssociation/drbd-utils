@@ -1,0 +1,137 @@
+diff -p -up drbd-8.3.7/drbd/drbd_main.c-usrsbin drbd-8.3.7/drbd/drbd_main.c
+--- drbd-8.3.7/drbd/drbd_main.c-usrsbin	2011-03-25 10:39:11.078062216 -0300
++++ drbd-8.3.7/drbd/drbd_main.c	2011-03-25 10:40:39.732062841 -0300
+@@ -144,7 +144,7 @@ int proc_details;       /* Detail level
+ 
+ /* Module parameter for setting the user mode helper program
+  * to run. Default is /sbin/drbdadm */
+-char usermode_helper[80] = "/sbin/drbdadm";
++char usermode_helper[80] = "/usr/sbin/drbdadm";
+ 
+ module_param_string(usermode_helper, usermode_helper, sizeof(usermode_helper), 0644);
+ 
+diff -p -up drbd-8.3.7/scripts/block-drbd-usrsbin drbd-8.3.7/scripts/block-drbd
+--- drbd-8.3.7/scripts/block-drbd-usrsbin	2011-03-25 11:11:15.869063929 -0300
++++ drbd-8.3.7/scripts/block-drbd	2011-03-25 11:17:57.016062831 -0300
+@@ -250,11 +250,11 @@ case "$command" in
+     case $t in 
+       drbd)
+         drbd_resource=$p
+-        drbd_role="$(/sbin/drbdadm role $drbd_resource)"
++        drbd_role="$(/usr/sbin/drbdadm role $drbd_resource)"
+         drbd_lrole="${drbd_role%%/*}"
+-        drbd_dev="$(/sbin/drbdadm sh-dev $drbd_resource)"
++        drbd_dev="$(/usr/sbin/drbdadm sh-dev $drbd_resource)"
+         if [ "$drbd_lrole" != 'Primary' ]; then
+-          /sbin/drbdadm primary $drbd_resource
++          /usr/sbin/drbdadm primary $drbd_resource
+         fi
+         dev=$drbd_dev
+         FRONTEND_ID=$(xenstore_read "$XENBUS_PATH/frontend-id")
+@@ -279,12 +279,12 @@ case "$command" in
+       drbd)
+         p=$(xenstore_read "$XENBUS_PATH/params")
+         drbd_resource=$p
+-        drbd_role="$(/sbin/drbdadm role $drbd_resource)"
++        drbd_role="$(/usr/sbin/drbdadm role $drbd_resource)"
+         drbd_lrole="${drbd_role%%/*}"
+         drbd_dev="$(/sbin/drbdadm sh-dev $drbd_resource)"
+ 
+         if [ "$drbd_lrole" != 'Secondary' ]; then
+-          /sbin/drbdadm secondary $drbd_resource
++          /usr/sbin/drbdadm secondary $drbd_resource
+         fi
+         exit 0
+         ;;
+diff -p -up drbd-8.3.7/scripts/drbddisk-usrsbin drbd-8.3.7/scripts/drbddisk
+--- drbd-8.3.7/scripts/drbddisk-usrsbin	2011-03-25 11:34:58.099063314 -0300
++++ drbd-8.3.7/scripts/drbddisk	2011-03-25 11:35:25.974062768 -0300
+@@ -8,7 +8,7 @@
+ ###
+ 
+ DEFAULTFILE="/etc/default/drbd"
+-DRBDADM="/sbin/drbdadm"
++DRBDADM="/usr/sbin/drbdadm"
+ 
+ if [ -f $DEFAULTFILE ]; then
+   . $DEFAULTFILE
+diff -p -up drbd-8.3.7/scripts/drbd.rules-usrsbin drbd-8.3.7/scripts/drbd.rules
+--- drbd-8.3.7/scripts/drbd.rules-usrsbin	2011-03-25 11:34:04.274063020 -0300
++++ drbd-8.3.7/scripts/drbd.rules	2011-03-25 11:34:15.389062979 -0300
+@@ -12,4 +12,4 @@
+ # having it as one single line avoids those problems.
+ #
+ # DO NOT WRAP THIS LINE
+-KERNEL=="drbd*", IMPORT{program}="/sbin/drbdadm sh-udev minor-%m", NAME="$env{DEVICE}", SYMLINK="drbd/by-res/$env{RESOURCE} drbd/by-disk/$env{DISK}"
++KERNEL=="drbd*", IMPORT{program}="/usr/sbin/drbdadm sh-udev minor-%m", NAME="$env{DEVICE}", SYMLINK="drbd/by-res/$env{RESOURCE} drbd/by-disk/$env{DISK}"
+diff -p -up drbd-8.3.7/scripts/drbdupper-usrsbin drbd-8.3.7/scripts/drbdupper
+--- drbd-8.3.7/scripts/drbdupper-usrsbin	2011-03-25 11:36:23.066063010 -0300
++++ drbd-8.3.7/scripts/drbdupper	2011-03-25 11:36:31.726062949 -0300
+@@ -11,7 +11,7 @@
+ ###
+ 
+ DEFAULTFILE="/etc/default/drbd"
+-DRBDADM="/sbin/drbdadm"
++DRBDADM="/usr/sbin/drbdadm"
+ 
+ if [ -f $DEFAULTFILE ]; then
+   . $DEFAULTFILE
+diff -p -up drbd-8.3.7/scripts/drbd-usrsbin drbd-8.3.7/scripts/drbd
+--- drbd-8.3.7/scripts/drbd-usrsbin	2011-03-25 11:31:29.495063116 -0300
++++ drbd-8.3.7/scripts/drbd	2011-03-25 11:31:57.243062981 -0300
+@@ -18,8 +18,8 @@
+ ### END INIT INFO
+ 
+ DEFAULTFILE="/etc/default/drbd"
+-DRBDADM="/sbin/drbdadm"
+-DRBDSETUP="/sbin/drbdsetup"
++DRBDADM="/usr/sbin/drbdadm"
++DRBDSETUP="/usr/sbin/drbdsetup"
+ PROC_DRBD="/proc/drbd"
+ MODPROBE="/sbin/modprobe"
+ RMMOD="/sbin/rmmod"
+diff -p -up drbd-8.3.7/scripts/Makefile.in-usrsbin drbd-8.3.7/scripts/Makefile.in
+--- drbd-8.3.7/scripts/Makefile.in-usrsbin	2011-03-25 11:56:00.180064488 -0300
++++ drbd-8.3.7/scripts/Makefile.in	2011-03-25 12:00:38.866063515 -0300
+@@ -148,4 +148,4 @@ uninstall:
+ 	rm -f $(DESTDIR)$(sysconfdir)/ha.d/resource.d/drbdupper
+ 	rm -f $(DESTDIR)$(sysconfdir)/xen/scripts/block-drbd
+ 	rm -f $(DESTDIR)$(sysconfdir)/bash_completion.d/$(COMPLETION)
+-	! test -L $(DESTDIR)/sbin/rcdrbd || rm $(DESTDIR)/sbin/rcdrbd
++	! test -L $(DESTDIR)/usr/sbin/rcdrbd || rm $(DESTDIR)/usr/sbin/rcdrbd
+diff -p -up drbd-8.3.7/user/Makefile.in-usrsbin drbd-8.3.7/user/Makefile.in
+--- drbd-8.3.7/user/Makefile.in-usrsbin	2011-03-25 11:49:13.250063363 -0300
++++ drbd-8.3.7/user/Makefile.in	2011-03-25 11:50:43.713062650 -0300
+@@ -98,23 +98,23 @@ distclean: clean
+ 
+ install:
+ ifeq ($(WITH_UTILS),yes)
+-	install -d $(DESTDIR)/sbin/
++	install -d $(DESTDIR)/usr/sbin/
+ 	install -d $(DESTDIR)$(localstatedir)/lib/drbd
+ 	install -d $(DESTDIR)$(localstatedir)/lock
+ 	if getent group haclient > /dev/null 2> /dev/null ; then	\
+-		install -g haclient -m 4750 drbdsetup $(DESTDIR)/sbin/ ;	\
+-		install -g haclient -m 4750 drbdmeta $(DESTDIR)/sbin/ ;	\
+-		install -m 755 drbdadm $(DESTDIR)/sbin/ ;		\
++		install -g haclient -m 4750 drbdsetup $(DESTDIR)/usr/sbin/ ;	\
++		install -g haclient -m 4750 drbdmeta $(DESTDIR)/usr/sbin/ ;	\
++		install -m 755 drbdadm $(DESTDIR)/usr/sbin/ ;		\
+ 	else								\
+-		install -m 755 drbdsetup $(DESTDIR)/sbin/ ;		\
+-		install -m 755 drbdmeta $(DESTDIR)/sbin/ ;		\
+-		install -m 755 drbdadm $(DESTDIR)/sbin/ ; 		\
++		install -m 755 drbdsetup $(DESTDIR)/usr/sbin/ ;		\
++		install -m 755 drbdmeta $(DESTDIR)/usr/sbin/ ;		\
++		install -m 755 drbdadm $(DESTDIR)/usr/sbin/ ; 		\
+ 	fi
+ endif
+ 
+ uninstall:
+-	rm -f $(DESTDIR)/sbin/drbdsetup
+-	rm -f $(DESTDIR)/sbin/drbdadm
++	rm -f $(DESTDIR)/usr/sbin/drbdsetup
++	rm -f $(DESTDIR)/usr/sbin/drbdadm
+ 
+ spell:
+ 	for f in drbdadm_adjust.c drbdadm_main.c drbdadm_parser.c drbdadm_usage_cnt.c drbdmeta.c drbdsetup.c drbdtool_common.c; do \
