@@ -10,7 +10,7 @@ Release:	%mkrel 1
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
 Group:		System/Kernel and hardware
-URL:		http://www.drbd.org/
+URL:		https://www.drbd.org/
 Source:		http://oss.linbit.com/drbd/%{major}.%{minor}/drbd-%{version}.tar.gz
 Patch:		drbd-8.3.7-usrsbin.patch
 # Install bash completion file on Mandriva
