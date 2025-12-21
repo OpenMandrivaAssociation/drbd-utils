@@ -14,6 +14,11 @@ URL:		https://www.drbd.org/
 Source:		http://oss.linbit.com/drbd/%{major}.%{minor}/drbd-%{version}.tar.gz
 Patch:		drbd-8.3.7-usrsbin.patch
 # Install bash completion file on Mandriva
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	bison
 BuildRequires:	flex
 Requires(post):	rpm-helper
