@@ -6,7 +6,7 @@
 
 Name:		drbd-utils
 Version:	%{major}.%{minor}.%{sub}
-Release:	%mkrel 1
+Release:	2
 Summary:	Utilities to manage DRBD devices
 License:	GPLv2+
 Group:		System/Kernel and hardware
